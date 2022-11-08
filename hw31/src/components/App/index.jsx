@@ -3,9 +3,10 @@ import WordsContainer from "../WordsContainer";
 import { words } from "../../data/words";
 import Triggers from "../Triggers";
 import { useState } from "react";
+import { Context } from "../../context";
+
 
 function App() {
-
   const [cards, setCards] = useState(words);
 
   const change_to_de = () => {
@@ -33,7 +34,8 @@ function App() {
           el.lang = el.lang === "ru" ? "de" : "ru";
         }
         return el;
-      }));
+      })
+    );
   };
 
   const add_card = (de, ru) =>
@@ -43,18 +45,28 @@ function App() {
         id: Date.now(),
         de,
         ru,
-        lang: 'de'
-        
+        lang: "de",
       },
     ]);
 
-   
+  const delete_card = (id) => setCards(cards.filter((el) => el.id !== id));
 
   return (
     <div>
-      <AddForm add_card={add_card} />
-      <WordsContainer words={cards} change_lang={change_lang} />
-      <Triggers change_de={change_to_de} change_ru={change_to_ru} />
+      <Context.Provider
+        value={{
+          add_card,
+          cards,
+          change_lang,
+          delete_card,
+          change_to_de,
+          change_to_ru,
+        }}
+      >
+        <AddForm />
+        <WordsContainer />
+        <Triggers />
+      </Context.Provider>
     </div>
   );
 }

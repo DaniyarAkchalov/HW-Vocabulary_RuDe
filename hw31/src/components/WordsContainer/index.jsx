@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import Word from "../Word";
 import s from "./index.module.css";
+import { Context } from "../../context";
 
-export default function WordsContainer({ words, change_lang }) {
+
+export default function WordsContainer() {
+
+const { cards } = useContext(Context)
+
   return (
     <div className={s.words_container}>
-      {words.map((el) => (
-        <Word key={el.id} {...el} change_lang={change_lang} />
+      {cards.map((el) => (
+        <Word key={el.id} {...el} />
       ))}
     </div>
   );
